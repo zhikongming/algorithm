@@ -1,5 +1,7 @@
 #/usr/bin/bash
 #It can be used to generate sh,python file
+#Usage:
+#      bash generate.sh a.py to create a.py
 set +x
 
 function generate_python()
