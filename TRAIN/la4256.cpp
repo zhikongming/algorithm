@@ -10,13 +10,6 @@ int edge[maxn][maxn];
 int path[pmaxn];
 int d[pmaxn][pmaxn];
 
-bool checkMatch(int x, int y) {
-    for (vector<int>::iterator it = edge[x].begin(); it != edge[x].end(); it++) {
-        if (*it == y) return true;
-    }
-    return false;
-}
-
 int main() {
     int T;
     scanf("%d", &T);
@@ -32,25 +25,39 @@ int main() {
         }
         int n;
         scanf("%d", &n);
-        for (int i = 0; i < n; i++) {
+        for (int i = 1; i <= n; i++) {
             scanf("%d", &path[i]);
         }
 
-        for (int i = 0; i < n; i++) 
-            for (int j = 0; j < vc; j++)
+        for (int i = 1; i <= n; i++) 
+            for (int j = 1; j <= vc; j++)
                 d[i][j] = INF;
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < vc; j++) {
-                if (i == 0) {
-                    if (path[i] == j) d[i][j] = 0;
-                    else d[i][j] = 1;
-                } else {
-                    
-                }
-            }
-        }
-
+        // set i = 0
+        int k = 1;
+        for (int j = 1; j <= vc; j++) {
+        	if (path[k] == j) d[k][j] = 0;
+        	else d[k][j] = 1;
+		}
+		k++;
+		// d[i][j] 表示前i个， 并且第i个为j满足path的最小的个数 
+		while (k <= n) {
+			for (int i = 1; i <= vc; i++) {
+				// d[k-1][i] to make d[k][j]
+				for (int j = 1; j <= vc; j++) {
+					if (j == i || edge[i][j]) {
+						if (j == path[k]) d[k][j] = min(d[k-1][i], d[k][j]);
+						else d[k][j] = min(d[k-1][i] + 1, d[k][j]);
+					}
+				}
+			}
+			k++;
+		}
+		int ans = INF;
+		for (int i = 1; i <= vc; i++) {
+			ans = min(d[n][i], ans);
+		}
+		
         printf("%d\n", ans);
     }
     return 0;

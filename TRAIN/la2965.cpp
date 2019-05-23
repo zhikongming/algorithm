@@ -40,9 +40,19 @@ int main() {
             for (int j = 0; j < n2; j++) {
                 if (i & (1<<j)) x ^= A[j + n1];
             }
-            // 一个新的方案
-
+            // 一个新的方案 x is one choice.
+			// if you want to make all to 0, the x must has been in tab.
+			// the bitcount(tab[x]) + bitcount(i) > bitcount(ans), update ans
+			if (tab.count(x) && (bitcount(tab[x]) + bitcount(i)) > bitcount(ans)) {
+				ans = (i<<n1)^tab[x];
+			}
         }
+        
+        printf("%d\n", bitcount(ans));
+		for (int i = 0; i < n; i++) {
+			if (ans & (1<<i)) printf("%d ", i + 1);
+		}
+		printf("\n");
     }
     return 0;
 }
